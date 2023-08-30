@@ -1,20 +1,16 @@
 function Dfield=createDfieldSize(pts,cns,scale,grid_size,name,outpath)
 %function Dfield = createDfieldSize(pts,cns,scale,grid_size,name,outpath)
-%
-%   Generates a distance field for a mesh with customizable parameters and
-%   option to save to file. 
-%
 %   Inputs:
 %      -pts: nx3 coordinates of mesh vertices, where n is the number of
 %      vertices.
 %      -cns: mx3 list of connections for mesh faces, where m is the number
 %      of faces.
 %      -scale: is the size of the dfields bounding box it is used in this
-%       manner: dfieldBB = SCALE*boneBB + boneBB. Default is 0.25.
+%       manner: dfieldBB = SCALE*boneBB + boneBB (default is 0.25)
 %      -grid_size: the number of points used to define the distance
 %      field. The distance field is comprised of a grid of (grid_size x 
 %      grid_size x grid_size) points from which the distance to the mesh 
-%       surface is computed. Default is 100.
+%       surface is computed/
 %      -name: the name of the mesh, if saving the Dfield to a .mat file.
 %      "_Dfield" will be appended to the filename such that a mesh named
 %      "sca15" will output a file named "sca15_Dfield.mat"
@@ -33,34 +29,11 @@ function Dfield=createDfieldSize(pts,cns,scale,grid_size,name,outpath)
 %   
 %       Dfield = createDfieldSize(pts,cns)
 %          --> Scale will be set to default of 0.25, and grid_size will be
-%          set to default of 100. The distance field will not be saved to
-%          file location.
-%
-%       Dfield = createDfieldSize(pts,cns,scale,gridsize)
-%          --> Scale and grid_size will be set to defined values. The
-%          distance field will not be saved to file location.
-%
-%       Dfield = createDfieldSize(pts,cns,scale,name,outpath)
-%          --> Scale and grid_size will be set to defined values. The
-%          distance field will be saved according to specified name and
-%          output directory.
-%
-%   Marai GE, Crisco JJ, Laidlaw DH. 2006 A kinematics-based method for 
-%   generating cartilage maps and deformations in the multi-articulating 
-%   wrist joint from CT images. Conf Proc IEEE Eng Med Biol Soc 1, 2079–2082.
-%   (doi:10.1109/IEMBS.2006.259742)
+%          set to default of 100.
+
 %       
 
 %%
-
-%Check for optional scale and grid_size
-if exist('scale','var') == 0
-    scale = 0.25;
-end
-
-if exist('grid_size','var') == 0
-    grid_size = 100;
-end
 
 display('Building distance field...');
 t1=tic;

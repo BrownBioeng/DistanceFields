@@ -1,8 +1,17 @@
-function distance = lookUpDfieldPtsSize(Dfield,pts,Rpose,Tpose,size)
-% DISTANCE = LOOKUPDFIELDPTS_SIZE(DFIELD,PTS,RPOSE,TPOSE)
-
-%Exact same as lookUpDfieldPts except adapted to change to gridsize other
-%than 100
+function distance = lookUpDfieldPtsSize(Dfield,pts,Rpose,Tpose,grid_size)
+% function distance = lookUpDfieldPtsSize(Dfield,pts,Rpose,Tpose,size)
+%   Inputs:
+%      -Dfield: distance field structure generated with createDfieldSize.m
+%      -pts: px3 list of points from which to compute a signed distance to
+%      the surface of the mesh.
+%      -Rpose: 3x3 rotation matrix for rotating distance field to pose of
+%      interest.
+%      -Tpose: 1x3 or 3x1 vector for translating distance field to pose of interest. 
+%      -grid_size: The number of points used to define the distance
+%      field. This would have been specified when generating the distance
+%      field in createDfieldSize. The default is 100.
+%
+%
 
 %neutral pose
 if nargin < 3
@@ -39,21 +48,21 @@ i1x = floor(dX); i2x = i1x + 1;
 i1y = floor(dY); i2y = i1y+1;
 i1z = floor(dZ); i2z = i1z+1;
 
-Iinclude = find(i2x < size+1 & i2y < size+1 & i2z < size+1 & i1x > 0 & i1y > 0 & i1z > 0);
-Iexclude = find(i2x > size | i2y > size | i2z > size | i1x < 1 | i1y < 1 | i1z < 1);
+Iinclude = find(i2x < grid_size+1 & i2y < grid_size+1 & i2z < grid_size+1 & i1x > 0 & i1y > 0 & i1z > 0);
+Iexclude = find(i2x > grid_size | i2y > grid_size | i2z > grid_size | i1x < 1 | i1y < 1 | i1z < 1);
 
 im_array = reshape(im,numel(im),1);
 % convert X Y Z index to one-dimensional index dim[100 x 100 x 100] becomes
 % [ones + 100's + 10000's]
 % if max([i1x i1y i1z i2x i2y i2z]) < 101 && min([i1x i1y i1z i2x i2y i2z]) > 0
-P0 = im_array(i1x(Iinclude) + i1y(Iinclude).*size-size  + i1z(Iinclude).*(size^2)-(size^2));
-P1 = im_array(i2x(Iinclude) + i1y(Iinclude).*size-size  + i1z(Iinclude).*(size^2)-(size^2));
-P2 = im_array(i2x(Iinclude) + i1y(Iinclude).*size-size  + i2z(Iinclude).*(size^2)-(size^2));
-P3 = im_array(i1x(Iinclude) + i1y(Iinclude).*size-size  + i2z(Iinclude).*(size^2)-(size^2));
-P4 = im_array(i1x(Iinclude) + i2y(Iinclude).*size-size  + i1z(Iinclude).*(size^2)-(size^2));
-P5 = im_array(i2x(Iinclude) + i2y(Iinclude).*size-size  + i1z(Iinclude).*(size^2)-(size^2));
-P6 = im_array(i2x(Iinclude) + i2y(Iinclude).*size-size  + i2z(Iinclude).*(size^2)-(size^2));
-P7 = im_array(i1x(Iinclude) + i2y(Iinclude).*size-size  + i2z(Iinclude).*(size^2)-(size^2));
+P0 = im_array(i1x(Iinclude) + i1y(Iinclude).*grid_size-grid_size  + i1z(Iinclude).*(grid_size^2)-(grid_size^2));
+P1 = im_array(i2x(Iinclude) + i1y(Iinclude).*grid_size-grid_size  + i1z(Iinclude).*(grid_size^2)-(grid_size^2));
+P2 = im_array(i2x(Iinclude) + i1y(Iinclude).*grid_size-grid_size  + i2z(Iinclude).*(grid_size^2)-(grid_size^2));
+P3 = im_array(i1x(Iinclude) + i1y(Iinclude).*grid_size-grid_size  + i2z(Iinclude).*(grid_size^2)-(grid_size^2));
+P4 = im_array(i1x(Iinclude) + i2y(Iinclude).*grid_size-grid_size  + i1z(Iinclude).*(grid_size^2)-(grid_size^2));
+P5 = im_array(i2x(Iinclude) + i2y(Iinclude).*grid_size-grid_size  + i1z(Iinclude).*(grid_size^2)-(grid_size^2));
+P6 = im_array(i2x(Iinclude) + i2y(Iinclude).*grid_size-grid_size  + i2z(Iinclude).*(grid_size^2)-(grid_size^2));
+P7 = im_array(i1x(Iinclude) + i2y(Iinclude).*grid_size-grid_size  + i2z(Iinclude).*(grid_size^2)-(grid_size^2));
 
 tmp1 = dX(Iinclude) - i1x(Iinclude);
 tmp2 = i2x(Iinclude) - dX(Iinclude);
